@@ -17,7 +17,7 @@ namespace Product_Management.Repository.ReadOnlyRepository
         public async Task<decimal> GetTotalValue()
         {
             decimal totalAmount = await _context.Products
-                .SumAsync(p => p.Price);
+                .SumAsync(p => p.Price * p.QuantityInStock);
 
             return totalAmount;
         }
