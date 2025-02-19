@@ -37,13 +37,13 @@ namespace Product_Management.Repository.WriteOnlyRepository
         public async Task<bool> UpdateProduct(int productId, int newQuantity)
         {
             var product = await _context.Products.FindAsync(productId);
-            product.QuantityInStock = newQuantity;
 
             if (product == null)
             {
                 return false;
             }
 
+            product.QuantityInStock = newQuantity;
             _context.Products.Update(product);
             return (await _context.SaveChangesAsync() > 0);
         }

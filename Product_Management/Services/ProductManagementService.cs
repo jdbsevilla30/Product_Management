@@ -28,6 +28,7 @@ namespace Product_Management.Services
                 Console.WriteLine("");
                 int productId = RemoveProductById();
 
+                Console.WriteLine("Do you want to remove this record Y/N");
                 ConfirmYesNoOperation();
 
                 bool removeProductSucceeded = await _productWriteOnlyRepository.RemoveProduct(productId);
@@ -217,7 +218,7 @@ namespace Product_Management.Services
 
                 int productId = UpdateByProductId();
                 int productQuantity = GetValidProductQuantity();
-
+                Console.WriteLine("Do you want to update this record Y/N");
                 ConfirmYesNoOperation();
 
                 bool updateProductSucceeded = await _productWriteOnlyRepository.UpdateProduct(productId, productQuantity);
