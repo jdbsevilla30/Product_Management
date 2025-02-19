@@ -188,13 +188,13 @@ namespace Product_Management.Services
                 input = Console.ReadLine();
 
                 // Check if the input is a valid decimal
-                if (!decimal.TryParse(input, out price) || price <= 0)
+                if (!decimal.TryParse(input, out price) || price < 0)
                 {
                     Console.WriteLine("");
                     Console.WriteLine("Invalid price! Please enter a valid positive decimal number.");
                     Console.WriteLine("");
                 }
-            } while (!decimal.TryParse(input, out price) || price <= 0);
+            } while (!decimal.TryParse(input, out price) || price < 0);
 
             return price;
         }
