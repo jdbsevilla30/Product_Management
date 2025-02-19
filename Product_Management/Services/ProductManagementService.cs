@@ -212,13 +212,13 @@ namespace Product_Management.Services
                 input = Console.ReadLine();
 
                 // Check if the input is a valid integer
-                if (!int.TryParse(input, out quantityInStock) || quantityInStock < 1)
+                if (!int.TryParse(input, out quantityInStock) || quantityInStock < 0)
                 {
                     Console.WriteLine("");
                     Console.WriteLine("Invalid quantity! Please enter a valid positive integer.");
                     Console.WriteLine("");
                 }
-            } while (!int.TryParse(input, out quantityInStock) || quantityInStock < 1); // Repeat if invalid input
+            } while (!int.TryParse(input, out quantityInStock) || quantityInStock < 0); // Repeat if invalid input
 
             return quantityInStock;
         }
