@@ -1,5 +1,5 @@
 Video Recording:
-https://somup.com/cTnqDTK9Io
+https://somup.com/cTnqDTK9Io (Note: please lower the audio, as my laptop is having audio problem)
 
 Made with .NET, SQLite and Entity Framework. 
 
