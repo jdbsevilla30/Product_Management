@@ -29,20 +29,30 @@ namespace Product_Management.Services
                 int productId = RemoveProductById();
 
                 Console.WriteLine("Do you want to remove this record Y/N");
-                ConfirmYesNoOperation();
 
-                bool removeProductSucceeded = await _productWriteOnlyRepository.RemoveProduct(productId);
+                bool operationConfirmation = ConfirmYesNoOperation();
 
-                if (removeProductSucceeded)
+                if (operationConfirmation)
                 {
-                    Console.WriteLine("");
-                    Console.WriteLine($"Product with the product id {productId} has been deleted");
-                    Console.WriteLine("");
+                    bool removeProductSucceeded = await _productWriteOnlyRepository.RemoveProduct(productId);
+
+                    if (removeProductSucceeded)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine($"Product with the product id {productId} has been deleted");
+                        Console.WriteLine("");
+                    }
+                    else
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine("Product has been already deleted or does not exist.");
+                        Console.WriteLine("");
+                    }
                 }
                 else
                 {
                     Console.WriteLine("");
-                    Console.WriteLine("Product has been already deleted or does not exist.");
+                    Console.WriteLine($"Operation stopped.");
                     Console.WriteLine("");
                 }
             }
@@ -109,20 +119,29 @@ namespace Product_Management.Services
                 Console.WriteLine($"Name: {product.Name}, Price: {product.Price}, Quantity: {product.QuantityInStock}");
                 Console.WriteLine("");
 
-                ConfirmYesNoOperation();
+                bool operationConfirmation = ConfirmYesNoOperation();
 
-                bool addProductSucceeded = await _productWriteOnlyRepository.AddProduct(product);
-
-                if (addProductSucceeded)
+                if (operationConfirmation)
                 {
-                    Console.WriteLine("");
-                    Console.WriteLine($"Product {product.Name} has been added. Its price is {product.Price} and its initial quantity is {product.QuantityInStock}");
-                    Console.WriteLine("");
+                    bool addProductSucceeded = await _productWriteOnlyRepository.AddProduct(product);
+
+                    if (addProductSucceeded)
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine($"Product {product.Name} has been added. Its price is {product.Price} and its initial quantity is {product.QuantityInStock}");
+                        Console.WriteLine("");
+                    }
+                    else
+                    {
+                        Console.WriteLine("");
+                        Console.WriteLine($"Add product failure. Here's the Product object: {product.Name}, {product.ProductId}, {product.QuantityInStock}, {product.Price}");
+                        Console.WriteLine("");
+                    }
                 }
                 else
                 {
                     Console.WriteLine("");
-                    Console.WriteLine($"Add product failure. Here's the Product object: {product.Name}, {product.ProductId}, {product.QuantityInStock}, {product.Price}");
+                    Console.WriteLine($"Operation stopped.");
                     Console.WriteLine("");
                 }
             }
@@ -219,17 +238,27 @@ namespace Product_Management.Services
                 int productId = UpdateByProductId();
                 int productQuantity = GetValidProductQuantity();
                 Console.WriteLine("Do you want to update this record Y/N");
-                ConfirmYesNoOperation();
 
-                bool updateProductSucceeded = await _productWriteOnlyRepository.UpdateProduct(productId, productQuantity);
+                bool operationConfirmation = ConfirmYesNoOperation();
 
-                if (updateProductSucceeded)
+                if (operationConfirmation)
                 {
-                    Console.WriteLine($"Product with the product id {productId}'s quantity has been changed to {productQuantity}");
+                    bool updateProductSucceeded = await _productWriteOnlyRepository.UpdateProduct(productId, productQuantity);
+
+                    if (updateProductSucceeded)
+                    {
+                        Console.WriteLine($"Product with the product id {productId}'s quantity has been changed to {productQuantity}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"There is a problem updating the product or the product id doesn't exist.");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine($"There is a problem updating the product or the product id doesn't exist.");
+                    Console.WriteLine("");
+                    Console.WriteLine($"Operation stopped.");
+                    Console.WriteLine("");
                 }
             }
             catch (Exception ex)
@@ -314,25 +343,29 @@ namespace Product_Management.Services
 
         #endregion GetTotalValue service
 
-        private void ConfirmYesNoOperation()
+        private bool ConfirmYesNoOperation()
         {
             string selection;
             do
             {
-                // make sure that everything is in lower case and there are no whitespaces
+                // Get input, trim whitespaces, and convert to lowercase
                 selection = Console.ReadLine().Trim().ToLower();
 
-                // Yes no confirmation
-                if (selection.ToLower() == "n")
+                // Yes/No confirmation
+                if (selection == "n")
                 {
-                    Console.WriteLine("Product addition cancelled.");
-                    return;
+                    Console.WriteLine("Operation cancelled. Returning to the main menu...");
+                    return false; // Indicate cancellation
                 }
-                else if (selection.ToLower() != "y")
+                else if (selection == "y")
+                {
+                    return true; // Indicate confirmation
+                }
+                else
                 {
                     Console.WriteLine("Invalid input. Please enter 'Y' to confirm or 'N' to cancel.");
                 }
-            } while (selection != "y");
+            } while (true);
         }
     }
 }
